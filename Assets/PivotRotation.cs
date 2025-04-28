@@ -21,10 +21,10 @@ public class PivotRotation : MonoBehaviour
         cubeState = FindFirstObjectByType<CubeState>();
     }
 
-    // Update is called once per frame
-    void Update()
+    // Update is called once per frame at the end
+    void LateUpdate()
     {
-        if (dragging) {
+        if (dragging && !autoRotating && !CubeState.solving) {
             SpinSide(activeSide);
             if (Input.GetMouseButtonUp(0)) {
                 dragging = false;
@@ -79,6 +79,14 @@ public class PivotRotation : MonoBehaviour
         localForward = Vector3.zero - side[4].transform.parent.transform.localPosition;
     }
 
+    public void StartAutoRotate(List<GameObject> side, float angle) {
+        cubeState.PickUp(side);
+        Vector3 localForward = Vector3.zero - side[4].transform.parent.transform.localPosition;
+        targetQuaternion = Quaternion.AngleAxis(angle, localForward) * transform.localRotation;
+        activeSide = side;
+        autoRotating = true;
+    }
+
     public void RotateToRightAngle()
     {
         Vector3 vec = transform.localEulerAngles;
@@ -102,6 +110,7 @@ public class PivotRotation : MonoBehaviour
             transform.localRotation = targetQuaternion;
             cubeState.PutDown(activeSide, transform.parent);
             readCube.ReadState();
+            CubeState.autoRotating = false;
             autoRotating = false;
             dragging = false;
         }
