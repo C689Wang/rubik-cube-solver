@@ -45,6 +45,7 @@ public class ReadCube : MonoBehaviour
         // cubeState.front = facesHit;
         // cubeMap.Set();
         ReadState();
+        CubeState.started = true;
     }
 
     // Update is called once per frame

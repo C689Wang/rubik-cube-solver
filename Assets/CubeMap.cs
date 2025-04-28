@@ -43,6 +43,7 @@ public class CubeMap : MonoBehaviour
         int i = 0;
         foreach(Transform map in side)
         {
+            if (i >= face.Count) return;
             if (face[i].name[0] == 'F')
             {
                 map.GetComponent<Image>().color = Color.green;

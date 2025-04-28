@@ -12,6 +12,8 @@ public class CubeState : MonoBehaviour
     public List<GameObject> right = new List<GameObject>();
     
     public static bool autoRotating = false;
+    public static bool started = false;
+    public static bool solving = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -33,8 +35,6 @@ public class CubeState : MonoBehaviour
                 face.transform.parent.transform.parent = cubeSide[4].transform.parent;
             }
         }
-        // start the side rotation logic
-        cubeSide[4].transform.parent.GetComponent<PivotRotation>().Rotate(cubeSide);
     }
 
     public void PutDown(List<GameObject> littleCubes, Transform pivot)
@@ -46,5 +46,27 @@ public class CubeState : MonoBehaviour
                 littleCube.transform.parent.transform.parent = pivot;
             }
         }
+    }
+
+    string GetSideString(List<GameObject> side)
+    {
+        string sideString = "";
+        foreach (GameObject face in side)
+        {
+            sideString += face.name[0].ToString();
+        }
+        return sideString;
+    }
+
+    public string GetStateString()
+    {
+        string stateString = "";
+        stateString += GetSideString(up);
+        stateString += GetSideString(right);
+        stateString += GetSideString(front);
+        stateString += GetSideString(down);
+        stateString += GetSideString(left);
+        stateString += GetSideString(back);
+        return stateString;
     }
 }
